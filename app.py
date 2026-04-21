@@ -18,7 +18,6 @@ from pydantic import BaseModel
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 import requests
-import math
 import webbrowser
 
 # ── Application instance ───────────────────────────────────────────────────────
@@ -77,7 +76,7 @@ class UserProfile(BaseModel):
     retireAge: int
 
 # -----------------------------
-# LOGIC (from logic.py)
+# LOGIC
 # -----------------------------
 def calculate_score(p: UserProfile) -> dict:
     """Calculate a holistic financial health score for the user.
@@ -155,7 +154,7 @@ def calculate_fire(p: UserProfile) -> dict:
     return {"years": years, "corpus": round(total, 2)}
 
 # -----------------------------
-# AI CHAT (from ai.py)
+# AI CHAT
 # -----------------------------
 def financial_agent(query: str, profile: dict, mode: str = "chat") -> str:
     """Send a prompt to the Groq LLM and return the AI's response.
