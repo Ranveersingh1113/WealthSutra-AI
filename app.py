@@ -20,6 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import requests
 import math
 import webbrowser
+import os
 
 # ── Application instance ───────────────────────────────────────────────────────
 app = FastAPI(
@@ -43,8 +44,8 @@ app.add_middleware(
 # -----------------------------
 # API KEY (keep yours)
 # -----------------------------
-# Replace with your actual Groq API key. Never commit real keys to version control.
-API_KEY = "api_key_here"
+# Read Groq API key from environment. Never commit real keys to version control.
+API_KEY = os.getenv("GROQ_API_KEY", "").strip()
 
 # -----------------------------
 # DATA MODEL
@@ -174,6 +175,9 @@ def financial_agent(query: str, profile: dict, mode: str = "chat") -> str:
     Returns:
         The model's reply as a string, or an error message if the call fails.
     """
+    if not API_KEY:
+        return "AI unavailable: set GROQ_API_KEY environment variable."
+
     try:
         # Build a short financial-context block so the LLM is grounded in the
         # user's actual numbers rather than giving generic advice.
